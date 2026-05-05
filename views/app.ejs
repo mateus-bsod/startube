@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star ☠ Tube</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        @keyframes mudaSombra {
+            0%, 100% { text-shadow: -1px -1px 0 #3c0a0a, 1px -1px 0 #3c0a0a, -1px 1px 0 #d12525, 1px 1px 0 #db1e1e; }
+            50% { text-shadow: 1px 1px 0 #101010, 1px 1px 0 #101010, 1px 1px 0 #610a0a, 1px 1px 0 #940909; }
+        }
+        .unifraktur-font { 
+            font-family: 'UnifrakturCook', cursive; 
+        }
+        .name-anim { animation: mudaSombra 2s infinite; }
+
+        /* Cursor Circular */
+        #circularcursor {
+            background-color: #ea2c2c58;
+            border: 1px solid #ea2c2c58;    
+            border-radius: 10px;
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            will-change: transform;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Seleção do Cursor */
+        ::selection {
+            background-color: #ea2c2c;
+            color: #000000;    
+        }
+
+        ::-moz-selection {
+            background-color: #ea2c2c;
+            color: #000000;
+        }
+
+        /* INPUT */
+        .input-foda {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #27272a;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .input-foda:focus {
+            border-color: #f23030;
+            box-shadow: 0 0 15px rgba(242, 216, 48, 0.3), inset 0 0 5px rgba(242, 216, 48, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .btn-foda {
+            background: #f23030;
+            color: black;
+            font-weight: 800;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 0 #8a1a1a;
+        }
+
+        .btn-foda:hover {
+            background: #ff6666;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 0 #8a1a1a;
+        }
+
+        .btn-foda:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #8a1a1a;
+        }
+
+        /* Scrollbar Video */
+        .custom-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #dc2626 transparent;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #dc2626;
+            border-radius: 999px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #ef4444;
+        }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+</head>
+<body class="bg-black text-zinc-300 min-h-screen flex flex-col relative">
+    <div id="circularcursor"></div>
+
+    <div id="wallpaper" 
+        class="fixed inset-0 z-[-1] bg-cover bg-center grayscale brightness-[0.2] blur-sm"
+        style="background-image: url('<%= bg %>');">
+    </div>
+
+    <nav class="bg-[#101010]/80 backdrop-blur-md border-b border-zinc-800 py-4 px-8 flex justify-center items-center shadow-2xl">
+        <h1 class="unifraktur-font text-3xl text-[#FFF] name-anim">Star</h1>
+        <img src="./assets/tube.png" alt="Logo" class="w-10 h-10 mx-2">
+        <h1 class="unifraktur-font text-3xl text-[#FFF] name-anim">Tube</h1>
+    </nav>
+
+    <main class="p-8 space-y-6">
+
+
+        <section class="max-w-4xl mx-auto w-full mt-10">
+            <form action="/info" method="GET" class="relative group">
+                <div class="flex flex-col md:flex-row gap-0 overflow-hidden border border-zinc-800 shadow-2xl">
+                    
+                    <input type="text" name="url" placeholder="COLE O LINK DO VÍDEO AQUI..." 
+                        class="input-foda flex-1 px-6 py-5 text-white placeholder-zinc-600 outline-none pixel-font text-lg">
+                    
+                    <button type="submit" class="btn-foda px-10 py-5 pixel-font flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <span>Analisar</span>
+                    </button>
+                </div>
+                
+            </form>
+        </section>
+
+        <!-- Video -->
+        <% if (typeof videoInfo !== 'undefined' && videoInfo) { %>
+
+        <%
+        const videos = videoInfo.formats.filter(f => f.type !== 'audio');
+        const audios = videoInfo.formats.filter(f => f.type === 'audio');
+        %>
+
+        <section class="max-w-5xl mx-auto mt-12 animate-in fade-in duration-500">
+            <div class="bg-[#101010]/90 backdrop-blur-md border border-zinc-800 rounded-2xl p-6 shadow-[0_0_50px_rgba(0,0,0,1)] flex flex-col md:flex-row gap-8">
+                
+                <div class="w-full md:w-80 shrink-0 text-center">
+                    <a href="<%= videoInfo.thumbnail %>" target="_blank" class="block relative group">
+                        <img src="<%= videoInfo.thumbnail %>" 
+                            class="w-full rounded-lg border-2 border-red-600 transition-transform duration-500 group-hover:scale-[1.02]">
+                        <div class="absolute inset-0 rounded-lg bg-gradient-to-t from-black/60 to-transparent"></div>
+                    </a>
+
+                    <h3 class="pixel-font text-[#909090] mb-3 uppercase mt-1 text-xs tracking-widest border-b border-zinc-800 pb-2">
+                        Clique na imagem para ampliar
+                    </h3>
+
+                    <h2 class="text-2xl text-white mt-4 leading-tight tracking-wide">
+                        <%= videoInfo.title %>
+                    </h2>
+                </div>
+
+                <div class="flex-1 grid md:grid-cols-2 gap-6">
+
+                    <div class="flex flex-col">
+                        <h3 class="pixel-font text-red-500 mb-3 uppercase text-xs tracking-widest border-b border-zinc-800 pb-2">
+                            Vídeos
+                        </h3>
+
+                        <div class="overflow-y-auto max-h-[300px] pr-2 custom-scroll">
+                            <table class="w-full text-left border-separate border-spacing-y-2">
+                                <tbody>
+                                    <% videos.reverse().forEach(f => { %>
+                                    <tr class="group">
+                                        <td class="bg-zinc-900/50 p-4 rounded-l-xl border border-zinc-800 group-hover:border-red-600/50 transition-all">
+                                            <div class="flex flex-col">
+                                                <span class="text-zinc-100 font-bold text-sm uppercase"><%= f.quality %></span>
+                                                <span class="text-zinc-500 text-[10px] font-mono"><%= f.ext %></span>
+                                            </div>
+                                        </td>
+                                        <td class="bg-zinc-900/50 p-4 text-right rounded-r-xl border border-zinc-800 group-hover:border-red-600/50 transition-all">
+                                            <a href="/download?url=<%= encodeURIComponent(videoInfo.url) %>&id=<%= f.id %>&type=video&ext=<%= f.ext %>&name=<%= encodeURIComponent(videoInfo.title) %>" 
+                                            class="inline-block border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-black px-6 py-2 rounded-lg text-xs font-black uppercase transition-all">
+                                                Baixar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <h3 class="pixel-font text-red-300 mb-3 uppercase text-xs tracking-widest border-b border-zinc-800 pb-2">
+                            Áudio
+                        </h3>
+
+                        <div class="overflow-y-auto max-h-[300px] pr-2 custom-scroll">
+                            <table class="w-full text-left border-separate border-spacing-y-2">
+                                <tbody>
+                                    <% audios.forEach(f => { %>
+                                    <tr class="group">
+                                        <td class="bg-zinc-900/50 p-4 rounded-l-xl border border-zinc-800 group-hover:border-red-300/50 transition-all">
+                                            <div class="flex flex-col">
+                                                <span class="text-zinc-100 font-bold text-sm uppercase">Áudio</span>
+                                                <span class="text-zinc-500 text-[10px] font-mono">mp3</span>
+                                            </div>
+                                        </td>
+                                        <td class="bg-zinc-900/50 p-4 text-right rounded-r-xl border border-zinc-800 group-hover:border-red-300/50 transition-all">
+                                            <a href="/download?url=<%= encodeURIComponent(videoInfo.url) %>&id=<%= f.id %>&type=audio&ext=mp3&name=<%= encodeURIComponent(videoInfo.title) %>" 
+                                            class="inline-block border-2 border-red-300 text-red-300 hover:bg-red-300 hover:text-black px-6 py-2 rounded-lg text-xs font-black uppercase transition-all">
+                                                Baixar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <% } %>
+
+    </main>
+
+    <script>
+        // Cursor Personalizado
+        const cursor = document.querySelector('#circularcursor');
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+
+        const suavizacao = 0.8;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        document.querySelectorAll('a, button, img').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.8)';
+            });
+
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        });
+
+        function animar() {
+            cursorX += (mouseX - cursorX) * suavizacao;
+            cursorY += (mouseY - cursorY) * suavizacao;
+
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+
+            requestAnimationFrame(animar);
+        }
+
+        animar();
+    </script>
+</body>
+</html>
