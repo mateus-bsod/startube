@@ -8,8 +8,6 @@
 ![EJS](https://img.shields.io/badge/EJS-A91E50?logo=ejs&style=for-the-badge)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=js&style=for-the-badge)
 
-Sucessor do querido [starmusic](https://github.com/mateus-bsod/starmusic) (feito em C)
-
 ---
 
 </div>
